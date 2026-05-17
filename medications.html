@@ -11,7 +11,6 @@
             background-color: #1a202c; color: white; 
         }
         
-        /* FIXED: Pointing exactly to your local avif file */
         #main-bg { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             object-fit: cover; z-index: 0; opacity: 0.25; 
@@ -22,7 +21,6 @@
             align-items: center; padding: 20px 20px; 
         }
         
-        /* Permanent Medical Disclaimer Banner */
         .disclaimer-banner {
             width: 100%;
             max-width: 760px;
@@ -59,24 +57,67 @@
         .intro-text { font-size: 1.1rem; line-height: 1.6; text-align: center; margin-bottom: 30px;}
         
         .med-category { margin-bottom: 30px; padding: 25px; border-radius: 15px; }
-        .acute-care { border-left: 5px solid #f87171; background: rgba(248, 113, 113, 0.1); }
-        .chronic-care { border-left: 5px solid #60a5fa; background: rgba(96, 165, 250, 0.1); }
+        .chronic-care { border-left: 5px solid #60a5fa; background: rgba(96, 165, 250, 0.05); }
+        .acute-care { border-left: 5px solid #f87171; background: rgba(248, 113, 113, 0.05); }
         
-        h3 { margin-top: 0; font-size: 1.4rem; color: #fff; margin-bottom: 10px;}
+        h3 { margin-top: 0; font-size: 1.4rem; color: #fff; margin-bottom: 15px;}
         
-        /* Clean List Layout for Clinical Data */
-        .drug-item {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            overflow: hidden;
         }
-        .drug-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         
-        .drug-name { font-size: 1.2rem; font-weight: bold; color: #63b3ed; }
-        .drug-class { font-size: 0.85rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;}
-        .symptom-alert { margin: 8px 0; font-size: 1rem; }
+        .accordion-btn {
+            width: 100%;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            color: #63b3ed;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .accordion-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        
+        .toggle-indicator { font-size: 1.2rem; color: #a0aec0; }
+        
+        .accordion-content {
+            display: none; 
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .drug-class { font-size: 0.9rem; color: #94a3b8; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;}
+        
+        .clinical-sub { font-weight: bold; color: #60a5fa; margin-top: 15px; margin-bottom: 5px; font-size: 1.05rem; }
+        .acute-sub { font-weight: bold; color: #f87171; margin-top: 15px; margin-bottom: 5px; font-size: 1.05rem; }
+        
+        .symptom-alert { margin: 10px 0; font-size: 1rem; padding: 10px 15px; background: rgba(239, 68, 68, 0.08); border-left: 3px solid #ef4444; border-radius: 4px; }
         .symptom-alert strong { color: #fca5a5; }
-        .clinical-note { color: #e2e8f0; font-style: italic; font-size: 0.95rem; line-height: 1.4; }
+        
+        .bullet-insight {
+            margin: 8px 0; padding-left: 15px; position: relative; font-size: 0.95rem; line-height: 1.5; color: #cbd5e1;
+        }
+        .bullet-insight::before {
+            content: "•"; position: absolute; left: 0; color: #60a5fa; font-weight: bold;
+        }
+        .bullet-acute {
+            margin: 8px 0; padding-left: 15px; position: relative; font-size: 0.95rem; line-height: 1.5; color: #cbd5e1;
+        }
+        .bullet-acute::before {
+            content: "•"; position: absolute; left: 0; color: #f87171; font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -92,63 +133,167 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="diet.html">The Gout Diet</a></li>
+                <li><a href="medications.html">Medications</a></li>
             </ul>
         </nav>
 
-       <div class="med-container">
-            <h1>Medication Guide & Symptom Checker</h1>
-            <p class="intro-text">Review your prescribed treatments below to understand how they work and what side effects you should monitor according to clinical practice guidelines.</p>
+        <div class="med-container">
+            <h1>Medication Guide & Clinical Considerations</h1>
+            <p class="intro-text">Click on any section below to expand and view specific pharmaceutical guidelines, adverse risk structures, and dosing metrics.</p>
             
             <div style="background: rgba(96, 165, 250, 0.1); border: 1px solid #60a5fa; padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: center; font-size: 1rem; line-height: 1.5;">
-                <strong>📊 Clinical Baseline:</strong> Uric acid typically begins to crystallize and deposit in joints at levels above <strong>7.0 mg/dL</strong> (416 µmol/L). Long-term preventative therapies aim to keep baseline levels well below this threshold to prevent crystal accumulation.
-            </div>
-
-            <div class="med-category acute-care">
-                <h3>🔴 Acute Flare Management (Pain & Inflammation)</h3>
-                <p style="margin-top: 0; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">Used directly during an active gout attack to reduce severe pain and joint swelling.</p>
-                
-                <div class="drug-item">
-                    <div class="drug-name">Colchicine</div>
-                    <div class="drug-class">Anti-inflammatory Microtubule Inhibitor</div>
-                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Diarrhea, nausea, vomiting, and stomach cramps. Infrequently: headache and fatigue.</div>
-                    <div class="clinical-note">Guideline recommendation: Lower doses (1.2 mg followed by 0.6 mg 1 hour later) are as effective as higher doses for reducing pain and are associated with significantly fewer gastrointestinal adverse effects.</div>
-                </div>
-
-                <div class="drug-item">
-                    <div class="drug-name">NSAIDs (e.g., Indomethacin, Naproxen, Ibuprofen)</div>
-                    <div class="drug-class">Nonsteroidal Anti-inflammatory Drugs</div>
-                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Indigestion, heartburn (dyspepsia), or severe stomach pain. Report any signs of gastrointestinal bleeding or ulcers immediately.</div>
-                    <div class="clinical-note">Guideline recommendation: Strong recommendation with high-quality evidence supporting use. Different types of NSAIDs show no clinically important differences in efficacy when treating gout flares.</div>
-                </div>
-
-                <div class="drug-item">
-                    <div class="drug-name">Corticosteroids (e.g., Prednisolone)</div>
-                    <div class="drug-class">Systemic Glucocorticoids</div>
-                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Mood changes, dysphoria, fluid retention (swelling), or elevated blood sugar levels.</div>
-                    <div class="clinical-note">Guideline recommendation: Equivalent to NSAIDs for managing acute gout but generally safer for patients with kidney disease, heart failure, or cirrhosis where NSAIDs are contraindicated.</div>
-                </div>
+                <strong>📊 Uric Acid Solubility Threshold:</strong> Gout symptoms result directly from an inflammatory response to the crystallization of excess urate when concentration fields cross the fluid saturation threshold, which occurs at values above <strong>7.0 mg/dL</strong> (416 µmol/L) or <strong>6.8 mg/dL</strong> (404 µmol/L).
             </div>
 
             <div class="med-category chronic-care">
-                <h3>🔵 Chronic Preventative Therapy (Urate-Lowering)</h3>
-                <p style="margin-top: 0; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">Taken daily over the long term to lower uric acid levels in the blood and prevent future attacks.</p>
+                <h3>🔵 Chronic Preventative Therapy (Long-Term Urate-Lowering)</h3>
+                <p style="margin-top: 0; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">Daily long-term maintenance agents designed to systematically drop serum urate levels, dissolve crystal configurations, and reduce recurrent attacks.</p>
                 
-                <div class="drug-item">
-                    <div class="drug-name">Allopurinol</div>
-                    <div class="drug-class">Xanthine Oxidase Inhibitor</div>
-                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Skin rash. Seek immediate medical attention if a rash develops, as it can indicate a rare but serious hypersensitivity reaction.</div>
-                    <div class="clinical-note">Guideline recommendation: Highly effective at decreasing serum urate levels. Long-term therapy is typically recommended for patients experiencing recurrent attacks (2 or more per year).</div>
+                <div class="accordion-item">
+                    <button class="accordion-btn" onclick="toggleSection('chronic-rules')">
+                        <span>📋 Clinical Initiation Rules & Timing</span>
+                        <span class="toggle-indicator" id="chronic-rules-icon">＋</span>
+                    </button>
+                    <div class="accordion-content" id="chronic-rules">
+                        <div class="bullet-insight"><strong>Avoid Routine Early Initiation:</strong> Guidelines recommend against starting long-term urate-lowering therapy after a standard standalone first gout attack, or in patients with infrequent attacks.</div>
+                        <div class="bullet-insight"><strong>Indications for Treatment:</strong> Long-term maintenance parameters are explicitly warranted for patients experiencing recurrent attacks ($\ge 2$ episodes per year), visible tophi configurations, chronic kidney disease, or urinary stones.</div>
+                        <div class="bullet-insight"><strong>The 6-Month Paradox:</strong> High-quality evidence displays that urate-lowering drugs do not minimize attack frequencies within the first 6 months, as rapid blood level changes can temporarily destabilize joint crystals. Structural benefits are realized past the 1-year mark.</div>
+                        <div class="bullet-insight"><strong>Concomitant Prophylaxis:</strong> To mitigate early flare risks when introducing maintenance drugs, guidelines support using low-dose colchicine (0.6 mg twice daily) or low-dose NSAIDs concurrently for longer than 8 weeks (up to 6 months). Stopping prophylaxis at 8 weeks instead of continuing can approximately double the acute flare risk.</div>
+                    </div>
                 </div>
 
-                <div class="drug-item">
-                    <div class="drug-name">Febuxostat</div>
-                    <div class="drug-class">Xanthine Oxidase Inhibitor</div>
-                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Abdominal pain, diarrhea, and musculoskeletal or joint aches.</div>
-                    <div class="clinical-note">Guideline recommendation: Equally effective as Allopurinol at dropping serum urate levels. Often utilized as an alternative long-term preventative option.</div>
+                <div class="accordion-item">
+                    <button class="accordion-btn" onclick="toggleSection('allopurinol-info')">
+                        <span>💊 Allopurinol Deep-Dive Profile</span>
+                        <span class="toggle-indicator" id="allopurinol-info-icon">＋</span>
+                    </button>
+                    <div class="accordion-content" id="allopurinol-info">
+                        <div class="drug-class">Xanthine Oxidase Inhibitor (First-Line Clinical Standard)</div>
+                        
+                        <div class="symptom-alert">
+                            <strong>Critical Symptoms to Report:</strong> Epidermal skin rash. Patients must stop therapy and seek immediate medical evaluation if a rash develops, as it can indicate a rare but serious hypersensitivity reaction.
+                        </div>
+                        
+                        <div class="clinical-sub">Dosing & Titration Metrics:</div>
+                        <div class="bullet-insight"><strong>Initial Dosing:</strong> Typically initiated at a low baseline of 50 mg to 100 mg orally per day.</div>
+                        <div class="bullet-insight"><strong>Titration Schedule:</strong> Graduated by upward increments of 50 mg to 100 mg per day every few weeks to minimize sudden serum shifts.</div>
+                        <div class="bullet-insight"><strong>Renal Adjustments:</strong> The starting dosage parameters must be strictly reduced if baseline kidney function is significantly impaired.</div>
+                        
+                        <div class="clinical-sub">Pharmacogenomic Warning (HLA-B*5801):</div>
+                        <div class="bullet-insight">Individuals carrying the <strong>HLA-B*5801</strong> genetic haplotype possess an extremely elevated risk for severe cutaneous adverse reactions, including Stevens-Johnson syndrome and toxic epidermal necrolysis.</div>
+                        <div class="bullet-insight">This haplotype is highly prevalent in specific Asian populations, specifically those of Han Chinese, Thai, or Korean descent who have stage 3 or worse chronic kidney disease.</div>
+                        
+                        <div class="clinical-sub">Economic & Formulary Factor:</div>
+                        <div class="bullet-insight">Generic allopurinol represents a highly cost-effective option, averaging a fair price of approximately $10 per 30-day supply. Brand-name formulations (e.g., Zyloprim) scale drastically higher to roughly $130 per 30-day supply.</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-btn" onclick="toggleSection('febuxostat-info')">
+                        <span>💊 Febuxostat Deep-Dive Profile</span>
+                        <span class="toggle-indicator" id="febuxostat-info-icon">＋</span>
+                    </button>
+                    <div class="accordion-content" id="febuxostat-info">
+                        <div class="drug-class">Xanthine Oxidase Inhibitor (Alternative Clinical Maintenance)</div>
+                        
+                        <div class="symptom-alert">
+                            <strong>Symptoms to Monitor:</strong> Abdominal pain, persistent diarrhea, and new musculoskeletal or localized joint aches.
+                        </div>
+                        
+                        <div class="clinical-sub">Dosing Parameters:</div>
+                        <div class="bullet-insight">Administered as a standard maintenance configuration of 40 mg to 80 mg orally once daily.</div>
+                        
+                        <div class="clinical-sub">Comparative Clinical Efficacy:</div>
+                        <div class="bullet-insight"><strong>Equivalence Tier:</strong> High-quality clinical data establishes that a 40 mg daily dose of febuxostat is equally effective as a standard 300 mg daily dose of allopurinol at decreasing serum urate levels.</div>
+                        <div class="bullet-insight"><strong>Superiority Tier:</strong> Stepping up the regimen to 80 mg of febuxostat daily is clinically proven to be more effective at lowering serum urate than either the 40 mg febuxostat or 300 mg allopurinol options.</div>
+                        <div class="bullet-insight"><strong>Flare Incidence:</strong> Initiating therapy at extreme doses (120 mg to 240 mg daily) generates a higher early incidence of acute flares compared to allopurinol, whereas standard doses (40 mg or 80 mg) demonstrate no baseline difference.</div>
+                        
+                        <div class="clinical-sub">Economic & Formulary Factor:</div>
+                        <div class="bullet-insight">Febuxostat is associated with significantly higher medical acquisition costs compared to generic allopurinol, with brand-name Uloric averaging a fair price of $272 per 30-day supply. Efficacy regarding long-term flare protection remains highly comparable between the two drugs.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="med-category acute-care">
+                <h3>🔴 Acute Flare Management (Short-Term Suppressive Care)</h3>
+                <p style="margin-top: 0; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">Suppressive anti-inflammatory options deployed immediately during an active flare to drop severe pain, swelling, and joint tenderness. Treatment of gout flares should be started as soon as possible for quicker resolution of symptoms.</p>
+                
+                <div class="accordion-item">
+                    <button class="accordion-btn" onclick="toggleSection('colchicine-info')">
+                        <span>💊 Colchicine (Acute Regimen Deep-Dive)</span>
+                        <span class="toggle-indicator" id="colchicine-info-icon">＋</span>
+                    </button>
+                    <div class="accordion-content" id="colchicine-info">
+                        <div class="drug-class">Anti-inflammatory Microtubule Inhibitor</div>
+                        
+                        <div class="symptom-alert">
+                            <strong>Symptoms to Report:</strong> Severe diarrhea, nausea, vomiting, and localized abdominal cramps or stomach pain. Infrequently associated with headache and fatigue.
+                        </div>
+                        
+                        <div class="acute-sub">Dosing & Safety Thresholds:</div>
+                        <div class="bullet-acute"><strong>The Low-Dose Requirement:</strong> High-quality evidence mandates a low-dose approach (1.2 mg orally followed by 0.6 mg 1 hour later). This strategy matches the pain relief efficacy of traditional high doses but significantly limits gastrointestinal side effects.</div>
+                        <div class="bullet-acute"><strong>Toxicity Comparison:</strong> High-dose regimens generate severe diarrhea in 77% of patients, whereas low-dose protocols drop the incidence rate to 23% (comparable to placebo fields at 14%).</div>
+                        <div class="bullet-acute"><strong>Contraindications:</strong> Explicitly contraindicated in patients presenting with renal or hepatic impairment who are concurrently utilizing potent cytochrome P450 3A4 inhibitors or P-glycoprotein inhibitors.</div>
+                        <div class="bullet-acute"><strong>Economic Factor:</strong> Colchicine represents the most expensive nonbiological formulation evaluated ($137 - $192 per 30-day supply).</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-btn" onclick="toggleSection('nsaid-info')">
+                        <span>💊 NSAIDs (Indomethacin, Naproxen, Ibuprofen)</span>
+                        <span class="toggle-indicator" id="nsaid-info-icon">＋</span>
+                    </button>
+                    <div class="accordion-content" id="nsaid-info">
+                        <div class="drug-class">Nonsteroidal Anti-inflammatory Drugs</div>
+                        
+                        <div class="symptom-alert">
+                            <strong>Symptoms to Report:</strong> Heartburn, indigestion (dyspepsia), or severe stomach pain. Report any indicators of dark stools or gastrointestinal bleeding instantly.
+                        </div>
+                        
+                        <div class="acute-sub">Clinical Application & Dosages:</div>
+                        <div class="bullet-acute"><strong>Efficacy Tier:</strong> Supported by high-quality evidence from randomized controlled trials and observational configurations. NSAIDs are universally effective as a class, meaning individual selections show no clinically important differences in pain reduction performance.</div>
+                        <div class="bullet-acute"><strong>Usual Adult Dosage Examples:</strong> Ibuprofen (800 mg 3-4 times daily), Naproxen (750 mg initial dose, followed by 250 mg every 8 hours), or Indomethacin (50 mg 3 times daily).</div>
+                        <div class="bullet-acute"><strong>Harms & Cautions:</strong> Adverse events range from mild dyspepsia to serious gastrointestinal perforations, ulcers, and bleeding. Long-term or excessive dosing structures can cause chronic renal insufficiency. Avoid or carefully monitor in patients with renal disease, heart failure, or cirrhosis.</div>
+                        <div class="bullet-acute"><strong>Economic Factor:</strong> Highly accessible options averaging $7 to $15 per supply range.</div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-btn" onclick="toggleSection('steroid-info')">
+                        <span>💊 Corticosteroids (Prednisolone)</span>
+                        <span class="toggle-indicator" id="steroid-info-icon">＋</span>
+                    </button>
+                    <div class="accordion-content" id="steroid-info">
+                        <div class="drug-class">Systemic Glucocorticoids</div>
+                        
+                        <div class="symptom-alert">
+                            <strong>Symptoms to Monitor:</strong> Mood fluctuations, dysphoria, severe fluid retention (swelling), or sharp elevations in blood glucose metrics.
+                        </div>
+                        
+                        <div class="acute-sub">Clinical Application & Dosages:</div>
+                        <div class="bullet-acute"><strong>Efficacy Equivalence:</strong> High-quality indirect evidence and head-to-head randomized trials prove that systemic corticosteroids are clinically equivalent to NSAIDs for pain reduction, joint status resolution, and overall symptom mitigation.</div>
+                        <div class="bullet-acute"><strong>Usual Adult Dosage:</strong> Successfully applied at an oral regimen of Prednisolone 35 mg to 40 mg daily for a 5-day cycle. </div>
+                        <div class="bullet-acute"><strong>First-Line Alternative Value:</strong> Corticosteroids are strongly considered as preferred first-line choices if a patient cannot safely utilize NSAIDs or colchicine due to severe comorbidities like advanced renal disease, heart failure, or cirrhosis. They present a low-cost profile ($11 per 50-day supply).</div>
+                        <div class="bullet-acute"><strong>Contraindications:</strong> Strictly contraindicated in patients possessing systemic fungal infections or known severe hypersensitivity matrices.</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId);
+            const icon = document.getElementById(sectionId + '-icon');
+            
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                icon.innerText = "＋";
+            } else {
+                content.style.display = "block";
+                icon.innerText = "－";
+            }
+        }
+    </script>
 </body>
 </html>
