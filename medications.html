@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medications & Symptoms</title>
+    <style>
+        body, html { 
+            margin: 0; padding: 0; min-height: 100%; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #1a202c; color: white; 
+        }
+        
+        /* FIXED: Pointing exactly to your local avif file */
+        #main-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover; z-index: 0; opacity: 0.25; 
+        }
+        
+        .content { 
+            position: relative; z-index: 1; display: flex; flex-direction: column; 
+            align-items: center; padding: 20px 20px; 
+        }
+        
+        /* Permanent Medical Disclaimer Banner */
+        .disclaimer-banner {
+            width: 100%;
+            max-width: 760px;
+            background: rgba(239, 68, 68, 0.15); 
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        nav { 
+            background: rgba(0, 0, 0, 0.6); padding: 20px 40px; 
+            border-radius: 50px; margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 40px; }
+        nav a { color: white; text-decoration: none; font-size: 1.2rem; font-weight: bold; }
+        nav a:hover { color: #4ade80; }
+        
+        .med-container {
+            max-width: 800px; background: rgba(0, 0, 0, 0.7);
+            padding: 40px; border-radius: 20px; backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        h1 { font-size: 2.5rem; text-align: center; color: #fff; margin-top: 0;}
+        .intro-text { font-size: 1.1rem; line-height: 1.6; text-align: center; margin-bottom: 30px;}
+        
+        .med-category { margin-bottom: 30px; padding: 25px; border-radius: 15px; }
+        .acute-care { border-left: 5px solid #f87171; background: rgba(248, 113, 113, 0.1); }
+        .chronic-care { border-left: 5px solid #60a5fa; background: rgba(96, 165, 250, 0.1); }
+        
+        h3 { margin-top: 0; font-size: 1.4rem; color: #fff; margin-bottom: 10px;}
+        
+        /* Clean List Layout for Clinical Data */
+        .drug-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .drug-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .drug-name { font-size: 1.2rem; font-weight: bold; color: #63b3ed; }
+        .drug-class { font-size: 0.85rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;}
+        .symptom-alert { margin: 8px 0; font-size: 1rem; }
+        .symptom-alert strong { color: #fca5a5; }
+        .clinical-note { color: #e2e8f0; font-style: italic; font-size: 0.95rem; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <img id="main-bg" src="meds-pic.avif" alt="Medications Background">
+
+    <div class="content">
+        <div class="disclaimer-banner">
+            <strong>⚠️ Medical Disclaimer:</strong> This portal is strictly for educational and informational purposes. It does not constitute medical advice. Always consult your physician or a qualified healthcare professional before starting any new medication or altering your treatment plan.
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="diet.html">The Gout Diet</a></li>
+            </ul>
+        </nav>
+
+       <div class="med-container">
+            <h1>Medication Guide & Symptom Checker</h1>
+            <p class="intro-text">Review your prescribed treatments below to understand how they work and what side effects you should monitor according to clinical practice guidelines.</p>
+            
+            <div style="background: rgba(96, 165, 250, 0.1); border: 1px solid #60a5fa; padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: center; font-size: 1rem; line-height: 1.5;">
+                <strong>📊 Clinical Baseline:</strong> Uric acid typically begins to crystallize and deposit in joints at levels above <strong>7.0 mg/dL</strong> (416 µmol/L). Long-term preventative therapies aim to keep baseline levels well below this threshold to prevent crystal accumulation.
+            </div>
+
+            <div class="med-category acute-care">
+                <h3>🔴 Acute Flare Management (Pain & Inflammation)</h3>
+                <p style="margin-top: 0; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">Used directly during an active gout attack to reduce severe pain and joint swelling.</p>
+                
+                <div class="drug-item">
+                    <div class="drug-name">Colchicine</div>
+                    <div class="drug-class">Anti-inflammatory Microtubule Inhibitor</div>
+                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Diarrhea, nausea, vomiting, and stomach cramps. Infrequently: headache and fatigue.</div>
+                    <div class="clinical-note">Guideline recommendation: Lower doses (1.2 mg followed by 0.6 mg 1 hour later) are as effective as higher doses for reducing pain and are associated with significantly fewer gastrointestinal adverse effects.</div>
+                </div>
+
+                <div class="drug-item">
+                    <div class="drug-name">NSAIDs (e.g., Indomethacin, Naproxen, Ibuprofen)</div>
+                    <div class="drug-class">Nonsteroidal Anti-inflammatory Drugs</div>
+                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Indigestion, heartburn (dyspepsia), or severe stomach pain. Report any signs of gastrointestinal bleeding or ulcers immediately.</div>
+                    <div class="clinical-note">Guideline recommendation: Strong recommendation with high-quality evidence supporting use. Different types of NSAIDs show no clinically important differences in efficacy when treating gout flares.</div>
+                </div>
+
+                <div class="drug-item">
+                    <div class="drug-name">Corticosteroids (e.g., Prednisolone)</div>
+                    <div class="drug-class">Systemic Glucocorticoids</div>
+                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Mood changes, dysphoria, fluid retention (swelling), or elevated blood sugar levels.</div>
+                    <div class="clinical-note">Guideline recommendation: Equivalent to NSAIDs for managing acute gout but generally safer for patients with kidney disease, heart failure, or cirrhosis where NSAIDs are contraindicated.</div>
+                </div>
+            </div>
+
+            <div class="med-category chronic-care">
+                <h3>🔵 Chronic Preventative Therapy (Urate-Lowering)</h3>
+                <p style="margin-top: 0; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 20px;">Taken daily over the long term to lower uric acid levels in the blood and prevent future attacks.</p>
+                
+                <div class="drug-item">
+                    <div class="drug-name">Allopurinol</div>
+                    <div class="drug-class">Xanthine Oxidase Inhibitor</div>
+                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Skin rash. Seek immediate medical attention if a rash develops, as it can indicate a rare but serious hypersensitivity reaction.</div>
+                    <div class="clinical-note">Guideline recommendation: Highly effective at decreasing serum urate levels. Long-term therapy is typically recommended for patients experiencing recurrent attacks (2 or more per year).</div>
+                </div>
+
+                <div class="drug-item">
+                    <div class="drug-name">Febuxostat</div>
+                    <div class="drug-class">Xanthine Oxidase Inhibitor</div>
+                    <div class="symptom-alert"><strong>Symptoms to report:</strong> Abdominal pain, diarrhea, and musculoskeletal or joint aches.</div>
+                    <div class="clinical-note">Guideline recommendation: Equally effective as Allopurinol at dropping serum urate levels. Often utilized as an alternative long-term preventative option.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

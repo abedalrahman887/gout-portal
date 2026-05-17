@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gout Diet</title>
+    <style>
+        body, html { 
+            margin: 0; padding: 0; min-height: 100%; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #1a202c; color: white; 
+            padding-bottom: 150px; /* Gives space so the bottom panel doesn't hide text */
+        }
+        
+        #main-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover; z-index: 0; opacity: 0.25; 
+        }
+        
+        .content { 
+            position: relative; z-index: 1; display: flex; flex-direction: column; 
+            align-items: center; padding: 40px 20px; 
+        }
+        
+        nav { 
+            background: rgba(0, 0, 0, 0.6); padding: 20px 40px; 
+            border-radius: 50px; margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 40px; }
+        nav a { color: white; text-decoration: none; font-size: 1.2rem; font-weight: bold; }
+        nav a:hover { color: #4ade80; }
+        
+        .diet-container {
+            max-width: 800px; background: rgba(0, 0, 0, 0.7);
+            padding: 40px; border-radius: 20px; backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        h1 { font-size: 2.5rem; text-align: center; color: #fff; margin-top: 0;}
+        .intro-text { font-size: 1.1rem; line-height: 1.6; text-align: center; margin-bottom: 30px;}
+        
+        .traffic-light { margin-bottom: 30px; padding: 20px; border-radius: 15px; }
+        .green-light { border-left: 5px solid #4ade80; background: rgba(74, 222, 128, 0.1); }
+        .yellow-light { border-left: 5px solid #facc15; background: rgba(250, 204, 21, 0.1); }
+        .red-light { border-left: 5px solid #f87171; background: rgba(248, 113, 113, 0.1); }
+        
+        h3 { margin-top: 0; display: flex; align-items: center; gap: 10px;}
+        ul.food-list { line-height: 1.8; font-size: 1.1rem; margin-bottom: 0;}
+
+        /* --- NEW: Clickable Text Styling --- */
+        .clickable-item {
+            font-weight: bold;
+            color: #63b3ed;
+            cursor: pointer;
+            border-bottom: 1px dashed #63b3ed;
+            transition: color 0.2s;
+        }
+        .clickable-item:hover { color: #fff; }
+
+        /* --- NEW: Fixed Bottom Data Panel --- */
+        #clinical-panel {
+            display: none; /* Hidden until clicked */
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 700px;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #475569;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+            z-index: 100;
+        }
+
+        #close-btn {
+            float: right;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            line-height: 1;
+            margin-top: -10px;
+        }
+        #close-btn:hover { color: #fff; }
+
+        .panel-title { font-size: 1.3rem; font-weight: bold; color: #fff; margin-bottom: 10px; margin-top: 0;}
+        .panel-stat { font-size: 1.1rem; margin-bottom: 10px; }
+        .panel-note { color: #cbd5e1; font-style: italic; line-height: 1.5;}
+    </style>
+</head>
+<body>
+
+    <img id="main-bg" src="diet-pic.avif" alt="Diet Background">
+
+    <div class="content">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="medications.html">Medications</a></li>
+            </ul>
+        </nav>
+
+        <div class="diet-container">
+            <h1>The Gout Diet: What to Eat</h1>
+            <p class="intro-text">Click on any highlighted ingredient category to view its exact purine levels and clinical notes below.</p>
+            
+            <div class="traffic-light green-light">
+                <h3>🟢 Green Light (Safe to Enjoy)</h3>
+                <ul class="food-list">
+                    <li><span class="clickable-item" onclick="showData('carbs')">Complex Carbohydrates</span>: Most pasta dishes, breads, and rice are perfectly safe bases for your meals.</li>
+                    <li><span class="clickable-item" onclick="showData('dairy')">Low-fat Dairy</span>: Milk, cheese, and yogurt can actually help lower uric acid levels.</li>
+                </ul>
+            </div>
+
+            <div class="traffic-light yellow-light">
+                <h3>🟡 Yellow Light (Eat in Moderation)</h3>
+                <ul class="food-list">
+                    <li><span class="clickable-item" onclick="showData('seafood')">Certain Seafood</span>: Ingredients like shrimp, crab, and lobster should be limited. Keep the portions small if cooking a seafood dish.</li>
+                    <li><span class="clickable-item" onclick="showData('lean-meat')">Lean Meats</span>: Chicken, beef, and pork contain moderate purines.</li>
+                </ul>
+            </div>
+
+            <div class="traffic-light red-light">
+                <h3>🔴 Red Light (Avoid)</h3>
+                <ul class="food-list">
+                    <li><span class="clickable-item" onclick="showData('bad-fish')">High-Purine Fish</span>: Anchovies, sardines, and mackerel.</li>
+                    <li><span class="clickable-item" onclick="showData('sweets')">High-Fructose Treats</span>: Commercial sweets and sodas spike uric acid. Stick to homemade sweets with controlled sugar.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="clinical-panel">
+        <span id="close-btn" onclick="closeData()">&times;</span>
+        <h3 id="p-title" class="panel-title">Title goes here</h3>
+        <div class="panel-stat">Purine Level: <strong id="p-level">Level goes here</strong></div>
+        <div id="p-note" class="panel-note">Note goes here</div>
+    </div>
+
+    <script>
+        // A "dictionary" holding all your clinical data
+        const clinicalData = {
+            'carbs': {
+                title: 'Pasta, Breads & Rice',
+                level: 'Very Low (< 50mg/100g)',
+                color: '#4ade80', // Green
+                note: 'Safe base for meals. Complex carbs help the body excrete uric acid more efficiently than simple sugars.'
+            },
+            'dairy': {
+                title: 'Milk, Cheese & Yogurt',
+                level: 'Trace (Almost 0mg)',
+                color: '#4ade80',
+                note: 'Proteins in milk actually promote the excretion of uric acid in urine, actively protecting against flares.'
+            },
+            'seafood': {
+                title: 'Shrimp, Crab & Lobster',
+                level: 'Moderate (50-150mg/100g)',
+                color: '#facc15', // Yellow
+                note: 'Limit portion sizes. While not as dangerous as anchovies, heavy consumption in dishes like garlic butter shrimp can slowly elevate baseline uric acid.'
+            },
+            'lean-meat': {
+                title: 'Chicken, Beef & Pork',
+                level: 'Moderate (50-150mg/100g)',
+                color: '#facc15',
+                note: 'Safe in moderation (around 4-6 oz per day). Boiling or braising meats can slightly reduce their purine content compared to frying or grilling.'
+            },
+            'bad-fish': {
+                title: 'Anchovies, Sardines, Mackerel',
+                level: 'Extreme (150-800mg/100g)',
+                color: '#f87171', // Red
+                note: 'Direct trigger for acute flares. Rapidly metabolizes into uric acid crystals in the joint fluid.'
+            },
+            'sweets': {
+                title: 'High-Fructose Corn Syrup',
+                level: 'Metabolic Trigger',
+                color: '#f87171',
+                note: 'Fructose rapidly accelerates the body’s breakdown of purines into uric acid. Opt for natural sugars or homemade desserts where you control the ingredients.'
+            }
+        };
+
+        // Function to inject the data and show the panel
+        function showData(foodType) {
+            const data = clinicalData[foodType]; // Pull the correct data from the dictionary above
+            
+            document.getElementById('p-title').innerText = data.title;
+            
+            const levelElement = document.getElementById('p-level');
+            levelElement.innerText = data.level;
+            levelElement.style.color = data.color; // Change text color based on safety
+            
+            document.getElementById('p-note').innerText = data.note;
+            
+            // Show the box
+            document.getElementById('clinical-panel').style.display = 'block';
+        }
+
+        // Function to hide the box when the X is clicked
+        function closeData() {
+            document.getElementById('clinical-panel').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
